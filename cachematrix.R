@@ -1,15 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This file is about caching the caculating result of invertex a matrix
 
-## Write a short comment describing this function
+## This function is to make a specal matrix to replace normal matrix to
+## support cache operation
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    inv <- NULL
+    set <- function(y) {
+        x <<- y
+        inv <<- NULL
+    }
+    get <- function() x
+    setIn <- function(i) {
+        inv <<- i
+    }
+    getIn <- function() inv
+    list(set = set, get = get, setIn = setIn, getIn = getIn)
 }
 
 
-## Write a short comment describing this function
+## This function will return the invert matrix of the given matrix
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    inv <- x$getIn()
+    if(!is.null(inv)){
+        message("get caching data")
+        inv
+    }
+    m <- x$get()
+    inv <- solve(m,...)
+    x$setIn(inv)
+    inv
 }
